@@ -11,10 +11,13 @@
 var startButton = document.getElementById('startButton');
 var callButton = document.getElementById('callButton');
 let changeButton = document.getElementById('change');
+let getStreamButton = document.getElementById('get-stream');
 callButton.disabled = true;
+getStreamButton.disabled = true;
 startButton.onclick = start;
 callButton.onclick = call;
 changeButton.onclick = change;
+getStreamButton.onclick = getStream;
 var startTime;
 var localVideo = document.getElementById('localVideo');
 var remoteVideo = document.getElementById('remoteVideo');
@@ -67,6 +70,7 @@ function gotStream(stream) {
   });
   localStream.getVideoTracks()[0].addEventListener('ended', function (e) {
     trace('localStreamTrack ended');
+    getStreamButton.disabled = false;
   });
   localStream.getVideoTracks()[0].addEventListener('unmute', function (e) {
     trace('localStreamTrack unmute');
@@ -109,13 +113,28 @@ function change() {
   }
   // pc1.addTrack(canvasVideoStream.getVideoTracks()[0], canvasVideoStream);
 }
-function changeStream(stream){
+
+function getStream() {
+  navigator.mediaDevices.enumerateDevices().then(stream => {
+    console.log(stream);
+    navigator.mediaDevices.getUserMedia({
+      audio: false,
+      video: true
+    }).then(res => {
+      changeStream(res)
+    })
+  })
+}
+
+function changeStream(stream) {
   console.log(pc1.getSenders())
-  for (var sender of pc1.getSenders()) {
-    if (sender.track.kind === "video") {
-      sender.replaceTrack(stream.getVideoTracks()[0]);
-      start()
-      return;
+  if (stream) {
+    for (var sender of pc1.getSenders()) {
+      if (sender.track.kind === "video") {
+        sender.replaceTrack(stream.getVideoTracks()[0]);
+        start()
+        return;
+      }
     }
   }
 }
@@ -170,7 +189,7 @@ function call() {
     onCreateOfferSuccess,
     onCreateSessionDescriptionError
   );
-  console.log("pc1",pc1)
+  console.log("pc1", pc1)
 }
 
 function onCreateSessionDescriptionError(error) {
@@ -284,22 +303,23 @@ function updateHexagonSize() {
   if (!isUpdatingHexagonSize)
     return;
   if (hexagonSize <= 1) {
-      stopUsingDiscreetMode();
-      isUpdatingHexagonSize = false;
-      return;
+    stopUsingDiscreetMode();
+    isUpdatingHexagonSize = false;
+    return;
   }
   hexagonSize--;
   setTimeout(updateHexagonSize, 300);
 }
-function stopUsingDiscreetMode()
-{
-    for(var sender of pc1.getSenders()) {
-        if (sender.track.kind === "video") {
-            sender.replaceTrack(localStream.getVideoTracks()[0]);
-            return;
-        }
+
+function stopUsingDiscreetMode() {
+  for (var sender of pc1.getSenders()) {
+    if (sender.track.kind === "video") {
+      sender.replaceTrack(localStream.getVideoTracks()[0]);
+      return;
     }
+  }
 }
+
 function startUsingDiscreetMode() {
   hexagonSize = 30;
   if (!canvasVideoStream)
