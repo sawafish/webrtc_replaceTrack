@@ -1,0 +1,55 @@
+html,
+body {
+  width: 100%;
+  height: 100%;
+  margin: 0;
+  padding: 0;
+}
+body {
+  display: flex;
+  justify-content: space-around;
+  align-items: center;
+  flex-direction: column;
+}
+.video_out,
+.btn_out {
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: space-around;
+}
+.video_out {
+  flex: 1;
+}
+
+.btn_out {
+  height: 10vh;
+  justify-content: center;
+  box-shadow: 0 -2px 4px rgba(0, 0, 0, 0.1);
+}
+.video_cell {
+  width: 48%;
+  height: 50%;
+  display: flex;
+  justify-content: center;
+  background-color: #ccc;
+  box-shadow: 0 5px 10px rgba(0, 0, 0, 0.2);
+}
+video {
+  height: 100%;
+  width: auto;
+  max-width: 100%;
+}
+button {
+  border: none;
+  outline: none;
+  color: #fff;
+  margin: 0 10px;
+  background-color: #3498db;
+  padding: 8px 60px;
+  cursor: pointer;
+  transition: all 0.35s;
+}
+button:hover {
+  opacity: 0.8;
+}
