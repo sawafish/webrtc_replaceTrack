@@ -11,6 +11,40 @@ body {
   align-items: center;
   flex-direction: column;
 }
+header {
+  width: 100%;
+  height: 5vh;
+  background-color: rgba(52, 152, 219, 0.6);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  position: relative;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+header span {
+  color: #fff;
+}
+header a {
+  width: 6vw;
+  height: 5vh;
+  position: absolute;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-left: 1px solid #eee;
+  opacity: 0.7;
+  transition: all 0.35s;
+  right: 0;
+  top: 0;
+}
+header a::after {
+  content: "";
+  width: 3vh;
+  height: 3vh;
+  background: url(./lib/github.svg) no-repeat center center;
+  background-size: 65%;
+  transition: all 0.35s;
+}
 .video_out,
 .btn_out {
   width: 100%;
